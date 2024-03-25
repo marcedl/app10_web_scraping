@@ -2,6 +2,7 @@ import requests
 import selectorlib
 import smtplib
 import os
+import time
 
 data = r"C:\Users\leona\OneDrive\Escritorio\Python Mega Course Build 20 Apps\app10_web_scraping\data.txt"
 
@@ -54,11 +55,13 @@ def read(extracted):
 
 
 if __name__ == "__main__":
-    scraped = scrape(URL)
-    extracted = extract(scraped)
-    print(extracted)
-    content = read(extracted)
-    if extracted != "No upcoming tours":
-        if extracted not in content:
-            store(extracted)
-            send_email(message="New event was found!")
+    while True:
+        scraped = scrape(URL)
+        extracted = extract(scraped)
+        print(extracted)
+        content = read(extracted)
+        if extracted != "No upcoming tours":
+            if extracted not in content:
+                store(extracted)
+                send_email(message="New event was found!")
+        time.sleep(2)
