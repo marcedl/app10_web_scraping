@@ -1,5 +1,7 @@
 import requests
 import selectorlib
+import smtplib
+import os
 
 data = r"C:\Users\leona\OneDrive\Escritorio\Python Mega Course Build 20 Apps\app10_web_scraping\data.txt"
 
@@ -21,7 +23,23 @@ def extract(source):
     return value
 
 
-def send_email():
+def send_email(message):
+    host = "smtp.gmail.com"
+    port = 465
+
+    user_name = "marcedl88@gmail.com"
+    password = os.getenv("PASSWORD")
+
+    receiver = "marcedl88@gmail.com"
+
+    message = f"""\
+    Subject: New event was found!
+
+    New event found: {extracted}
+    """
+    with smtplib.SMTP_SSL(host, port) as server:
+        server.login(user_name, password)
+        server.sendmail(user_name, receiver, message)
     print("Email was sent")
 
 
@@ -43,4 +61,4 @@ if __name__ == "__main__":
     if extracted != "No upcoming tours":
         if extracted not in content:
             store(extracted)
-            send_email()
+            send_email(message="New event was found!")
